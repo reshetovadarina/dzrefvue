@@ -37,6 +37,27 @@ function decreaseQty(item) {
   }
 }
 
+const cart2 = ref([
+  { id: 1, name3: 'Кава', price: 450, qty: 1 },
+  { id: 2, name3: 'Молоко мигдальне', price: 95, qty: 2 },
+  { id: 3, name3: 'Шоколад чорний з малиною', price: 110, qty: 1 }
+])
+
+const unrelatedCount = ref(0)
+
+function getTotalPrice() {
+  console.log('Викликано функцію підрахунку суми!')
+  return cart2.value.reduce((sum, item) => sum + item.price * item.qty, 0)
+}
+
+function increaseQty(item) {
+  item.qty++
+}
+
+function decreaseQty(item) {
+  if (item.qty > 1) item.qty--
+}
+
 </script>
 
 <template>
@@ -82,6 +103,28 @@ function decreaseQty(item) {
 
     <hr />
     <h4>Загальна сума до сплати: {{ totalPrice }} грн</h4>
+  </div>
+
+   <div class="cart2">
+    <h3>Кошик покупок</h3>
+
+    <ul>
+      <li v-for="item in cart2" :key="item.id">
+        <span><strong>{{ item.name3 }}</strong> — {{ item.price }} грн</span>
+        <button @click="decreaseQty(item)" :disabled="item.qty <= 1">−</button>
+        <span>{{ item.qty }} шт.</span>
+        <button @click="increaseQty(item)">+</button>
+      </li>
+    </ul>
+
+    <hr />
+    <h4>Загальна сума: {{ getTotalPrice() }} грн</h4>
+    <p>Дублюємо суму (наприклад, для кнопки оплати): {{ getTotalPrice() }} грн</p>
+
+    <hr />
+    <button @click="unrelatedCount++">
+      Натиснуто разів: {{ unrelatedCount }}
+    </button>
   </div>
 
 </template>
